@@ -1,5 +1,5 @@
 <template>
-  <section class="w-screen h-screen relative">
+  <section class="w-screen h-screen overflow-hidden relative">
     <NuxtLoadingIndicator :color="PRIMARY_COLOR" />
 
     <NuxtLayout class="w-full h-full">

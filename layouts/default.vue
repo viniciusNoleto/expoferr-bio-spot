@@ -2,7 +2,7 @@
   <section class="grid grid-cols-[minmax(15rem,auto)_1fr]">
     <HomeAside />
 
-    <main class="flex flex-col *:grow px-10 py-8">
+    <main class="flex flex-col *:grow px-10 py-8 overflow-auto">
       <slot />
     </main>
   </section>

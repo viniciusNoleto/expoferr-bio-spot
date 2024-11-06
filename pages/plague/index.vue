@@ -2,28 +2,28 @@
   <UtilsPageFrame
     :breadcrumbs="[
       { route: 'index', name: 'Início' },
-      { route: 'suspect', name: 'Suspeitas' },
+      { route: 'plague', name: 'Pragas' },
     ]"
   >
     <UtilsCard>
       <UtilsTable
-        title="Suspeitas"
-        :pagination="suspectsPagination"
-        :loading="suspectsLoading"
-        :data="suspects"
+        title="Pragas"
+        :pagination="plaguesPagination"
+        :loading="plaguesLoading"
+        :data="plagues"
         :columns="[
           { field: 'id', label: 'ID' },
           { field: 'process_info.description', label: 'Descrição' },
           { field: 'status', label: 'Situação' },
         ]"
-        @change-page="suspectsChangePage"
+        @change-page="plaguesChangePage"
       >
         <template #functions>
           <ExpoButton
-            to="/suspect/store"
+            to="/plague/store"
             color="primary"
             padding="p-2"
-            tooltip-text="Nova suspeita"
+            tooltip-text="Nova praga"
             :icon="GLOBAL_ICONS.store"
           />
         </template>
@@ -42,7 +42,7 @@
 
         <template #actions="{ item }">
           <ExpoButton
-            :to="`/suspect/${item.id}`"
+            :to="`/plague/${item.id}`"
             color="hover-primary"
             :icon="GLOBAL_ICONS.detail"
           />
@@ -54,16 +54,16 @@
 
 <script setup>
 
-  import { useGetSuspectsPaginatedRequestHandler } from '~/app/suspect/handlers/getSuspectsPaginatedRequestHandler';
+  import { useGetPlaguesPaginatedRequestHandler } from '~/app/plague/handlers/getPlaguesPaginatedRequestHandler';
   import { GLOBAL_ICONS } from '~/shared/packages/constants/icons';
 
 
   const {
-    data: suspects,
-    loading: suspectsLoading,
-    changePage: suspectsChangePage,
-    pagination: suspectsPagination,
-  } = useGetSuspectsPaginatedRequestHandler({
+    data: plagues,
+    loading: plaguesLoading,
+    changePage: plaguesChangePage,
+    pagination: plaguesPagination,
+  } = useGetPlaguesPaginatedRequestHandler({
     perPage: 10,
   });
 

@@ -8,16 +8,41 @@
     <UtilsCard>
       <UtilsTable
         title="Denúncias"
+        :pagination="complaintsPagination"
+        :loading="complaintsLoading"
         :data="complaints"
         :columns="[
           { field: 'id', label: 'ID' },
-          { field: 'description', label: 'Descrição' },
-          { field: 'status.name', label: 'Situação' },
+          { field: 'process_info.description', label: 'Descrição' },
+          { field: 'status', label: 'Situação' },
         ]"
+        @change-page="complaintsChangePage"
       >
+        <template #functions>
+          <ExpoButton
+            to="/complaint/store"
+            color="primary"
+            padding="p-2"
+            tooltip-text="Nova denúncia"
+            :icon="GLOBAL_ICONS.store"
+          />
+        </template>
+
+        <template #cell:status="{ item }">
+          <div class="center-flex">
+            <UtilsBadge
+              :style="{
+                backgroundColor: item.status.color + '4d',
+              }"
+            >
+              {{ item.status.name }}
+            </UtilsBadge>
+          </div>
+        </template>
+
         <template #actions="{ item }">
           <ExpoButton
-            :to="`/complaints/${item.id}`"
+            :to="`/complaint/${item.id}`"
             color="hover-primary"
             :icon="GLOBAL_ICONS.detail"
           />
@@ -29,34 +54,17 @@
 
 <script setup>
 
+  import { useGetComplaintsPaginatedRequestHandler } from '~/app/complaint/handlers/getComplaintsPaginatedRequestHandler';
   import { GLOBAL_ICONS } from '~/shared/packages/constants/icons';
 
-  // complaints of suspected plagues
-  const complaints = ref([
-    {
-      id: 1,
-      description: 'Denúncia de praga na plantação de milho',
-      status: {
-        name: 'Em análise',
-        slug: 'pending',
-      }
-    },
-    {
-      id: 2,
-      description: 'Denúncia de praga na plantação de soja',
-      status: {
-        name: 'Confirmada',
-        slug: 'confirmed',
-      }
-    },
-    {
-      id: 3,
-      description: 'Denúncia de praga na plantação de feijão',
-      status: {
-        name: 'Descartada',
-        slug: 'discarded',
-      }
-    },
-  ]);
+
+  const {
+    data: complaints,
+    loading: complaintsLoading,
+    changePage: complaintsChangePage,
+    pagination: complaintsPagination,
+  } = useGetComplaintsPaginatedRequestHandler({
+    perPage: 10,
+  });
 
 </script>

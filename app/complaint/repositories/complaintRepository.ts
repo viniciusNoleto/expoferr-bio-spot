@@ -1,4 +1,5 @@
 
+import type { IComplaint } from '~/app/complaint/models/Complaint';
 import { useExpoferrLaravelClient } from '~/clients/ExpoferrLaravelClient';
 
 export const useComplaintRepository = defineRepository(useExpoferrLaravelClient, (client) => {
@@ -6,11 +7,11 @@ export const useComplaintRepository = defineRepository(useExpoferrLaravelClient,
   const url = 'complaints/';
 
   function getComplaint(complaint_id: string|number) {
-    return client.get<{}>({ url: url + complaint_id });
+    return client.get<IComplaint>({ url: url + complaint_id });
   };
 
   function getComplaints(params: object) {
-    return client.get<any[]>({ url, params });
+    return client.get<IComplaint[]>({ url, params });
   };
 
   function storeComplaint(body: object) {
