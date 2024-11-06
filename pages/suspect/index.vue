@@ -44,6 +44,7 @@
           <ExpoButton
             :to="`/suspect/${item.id}`"
             color="hover-primary"
+            icon-class="text-lg"
             :icon="GLOBAL_ICONS.detail"
           />
         </template>
@@ -56,7 +57,6 @@
 
   import { useGetSuspectsPaginatedRequestHandler } from '~/app/suspect/handlers/getSuspectsPaginatedRequestHandler';
   import { GLOBAL_ICONS } from '~/shared/packages/constants/icons';
-
 
   const {
     data: suspects,

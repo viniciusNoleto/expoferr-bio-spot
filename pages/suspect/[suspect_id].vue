@@ -58,23 +58,92 @@
           <ExpoButton
             label="Descartar suspeita"
             color="red"
-            @action="discartSuspect"
+            @action="modals.discard = true"
           />
 
           <ExpoButton
             label="Confirmar suspeita"
             color="primary"
-            @action="confirmSuspect"
+            @action="modals.confirm = true"
           />
         </div>
       </template>
     </UtilsCard>
+
+    <UtilsModal
+      v-if="modals.confirm"
+      v-model:visible="modals.confirm"
+      title="Confirmar suspeita"
+      class="gap-6 py-2"
+      size="max-w-xl"
+    >
+      <ExpoInputFrame
+        label="Anotações"
+      >
+        <ExpoInputTextarea
+          v-model="confirmSuspectForm.notes"
+        />
+      </ExpoInputFrame>
+
+      <ExpoInputFrame
+        label="Tipo de praga"
+      >
+        <ExpoInputSelect
+          v-model="confirmSuspectForm.plague_type_id"
+          :options="plagueTypes"
+          :loading="plagueTypesLoading"
+          option-value="id"
+          option-label="name"
+        />
+      </ExpoInputFrame>
+
+      <div class="center-flex gap-4">
+        <ExpoButton
+          label="Fechar"
+          color="gray"
+          @action="modals.confirm = false"
+        />
+
+        <ExpoButton
+          label="Confirmar"
+          color="primary"
+          :loading="confirmSuspectLoading"
+          @action="confirmSuspect"
+        />
+      </div>
+    </UtilsModal>
+
+    <UtilsModal
+      v-if="modals.discard"
+      v-model:visible="modals.discard"
+      title="Descartar suspeita"
+      class="gap-6 py-2"
+      size="max-w-sm"
+    >
+      <div class="center-flex gap-4">
+        <ExpoButton
+          label="Fechar"
+          color="gray"
+          @action="modals.discard = false"
+        />
+
+        <ExpoButton
+          label="Confirmar"
+          color="red"
+          :loading="discardSuspectLoading"
+          @action="discardSuspect"
+        />
+      </div>
+    </UtilsModal>
   </UtilsPageFrame>
 </template>
 
 <script setup>
 
   import { useGetSuspectLoadingRequestHandler } from '~/app/suspect/handlers/getSuspectLoadingRequestHandler';
+  import { useConfirmSuspectFormRequestHandler } from '~/app/suspect/handlers/confirmSuspectFormRequestHandler';
+  import { useDiscardSuspectFormRequestHandler } from '~/app/suspect/handlers/discardSuspectFormRequestHandler';
+  import { useGetPlagueTypesLoadingRequestHandler } from '~/app/plague/handlers/getPlagueTypesLoadingRequestHandler';
 
   const route = useRoute();
 
@@ -94,12 +163,34 @@
     () => navigateToPrevious('/suspect')
   );
 
-  function confirmSuspect() {
+  const {
+    data: plagueTypes,
+    loading: plagueTypesLoading
+  } = useGetPlagueTypesLoadingRequestHandler();
 
-  }
+  const modals = ref({
+    confirm: null,
+    discard: null,
+  });
 
-  function discartSuspect() {
+  const confirmSuspectForm = ref({
+    plague_type_id: undefined,
+    notes: undefined,
+  });
 
-  } 
+  const {
+    request: confirmSuspect,
+    loading: confirmSuspectLoading
+  } = useConfirmSuspectFormRequestHandler(
+    () => route.params.suspect_id,
+    confirmSuspectForm
+  );
+
+  const {
+    request: discardSuspect,
+    loading: discardSuspectLoading
+  } = useDiscardSuspectFormRequestHandler(
+    () => route.params.suspect_id
+  );
 
 </script>

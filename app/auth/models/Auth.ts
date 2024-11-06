@@ -1,5 +1,6 @@
 
 export interface IAuth {
-  token: string;
-  user: object;
+  access_token: string;
+  name: string;
+  abilities: string[];
 }

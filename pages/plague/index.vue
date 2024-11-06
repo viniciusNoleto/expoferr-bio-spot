@@ -44,6 +44,7 @@
           <ExpoButton
             :to="`/plague/${item.id}`"
             color="hover-primary"
+            icon-class="text-lg"
             :icon="GLOBAL_ICONS.detail"
           />
         </template>

@@ -2,12 +2,25 @@
   <UtilsPageFrame
     :breadcrumbs="[
       { route: 'index', name: 'Início' },
-      { route: 'plague', name: 'Denúncias' },
-      { route: 'plague-store', name: 'Nova denúncia' },
+      { route: 'plague', name: 'Pragas' },
+      { route: 'plague-store', name: 'Nova praga' },
     ]"
   >
     <UtilsCard class="gap-12">
       <section class="form-grid form-gap">
+        <ExpoInputFrame
+          label="Tipo de praga"
+          class="col-span-12"
+        >
+          <ExpoInputSelect
+            v-model="storePlagueForm.plague_type_id"
+            :options="plagueTypes"
+            :loading="plagueTypesLoading"
+            option-value="id"
+            option-label="name"
+          />
+        </ExpoInputFrame>
+
         <ExpoInputFrame
           label="Localização"
           class="col-span-12"
@@ -95,6 +108,8 @@
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map.value);
+
+    marker.value = L.marker([storePlagueForm.value.lat, storePlagueForm.value.lng]).addTo(map.value);
 
     map.value.on('click', (e) => {
       storePlagueForm.value.lat = e.latlng.lat;

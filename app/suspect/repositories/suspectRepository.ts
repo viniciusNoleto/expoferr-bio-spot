@@ -9,6 +9,14 @@ export const useSuspectRepository = defineRepository(useExpoferrLaravelClient, (
     return client.get<{}>({ url: url + suspect_id });
   };
 
+  function confirmSuspect(suspect_id: string|number, body: object) {
+    return client.post<never>({ url: url + suspect_id, body });
+  };
+
+  function discardSuspect(suspect_id: string|number) {
+    return client.post<never>({ url: url + suspect_id });
+  };
+
   function getSuspects(params: object) {
     return client.get<any[]>({ url, params });
   };
@@ -21,6 +29,8 @@ export const useSuspectRepository = defineRepository(useExpoferrLaravelClient, (
     getSuspect,
     getSuspects,
     storeSuspect,
+    confirmSuspect,
+    discardSuspect
   };
 
 });

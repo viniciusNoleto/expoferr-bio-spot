@@ -14,11 +14,19 @@ export const useUserStore = defineStore('User', () => {
     token.value = _token;
   };
 
+  function logout() {
+    user.value = undefined;
+    token.value = undefined;
+
+    navigateTo('/auth/login');
+  }
+
   return {
     user,
     setUser,
     token,
-    setToken
+    setToken,
+    logout
   }
 
 });

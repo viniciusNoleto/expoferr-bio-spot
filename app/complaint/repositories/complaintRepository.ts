@@ -10,6 +10,14 @@ export const useComplaintRepository = defineRepository(useExpoferrLaravelClient,
     return client.get<IComplaint>({ url: url + complaint_id });
   };
 
+  function confirmComplaint(complaint_id: string|number, body: object) {
+    return client.post<IComplaint>({ url: url + complaint_id + '/confirm', body });
+  };
+
+  function discardComplaint(complaint_id: string|number) {
+    return client.post<IComplaint>({ url: url + complaint_id + '/discard' });
+  };
+
   function getComplaints(params: object) {
     return client.get<IComplaint[]>({ url, params });
   };
@@ -22,6 +30,8 @@ export const useComplaintRepository = defineRepository(useExpoferrLaravelClient,
     getComplaint,
     getComplaints,
     storeComplaint,
+    confirmComplaint,
+    discardComplaint
   };
 
 });

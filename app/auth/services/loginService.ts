@@ -8,10 +8,13 @@ export const useLoginService = defineService(() => {
 
   async function loginService(form: any) {
     return await login(form).then(useCallAndReturn((response) => {
-      userStore.setToken(response.data.token);
-      userStore.setUser(response.data.user);
+      userStore.setToken(response.data.access_token);
+      userStore.setUser({
+        name: response.data.name,
+        email: response.data.abilities
+      });
 
-      navigateTo('/home');
+      navigateTo('/');
     }));
   }
 

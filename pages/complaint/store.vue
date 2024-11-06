@@ -24,7 +24,7 @@
           class="col-span-12"
         >
           <ExpoInputTextarea
-            v-model="storeComplaintForm.address"
+            v-model="storeComplaintForm.address.full_address"
           />
         </ExpoInputFrame>
 
@@ -43,7 +43,7 @@
           label="Confirmar"
           color="primary"
           :loading="storeComplaintLoading"
-          @action="storeComplaintRequest"
+          @action="storeComplaint"
         />
       </section>
     </UtilsCard>
@@ -57,7 +57,10 @@
 
   const storeComplaintForm = ref({
     description: '',
-    address: '',
+    address: {
+      full_address: '',
+      coordinates: ''
+    },
     lat: 0,
     lng: 0,
   });
@@ -66,6 +69,11 @@
     loading: storeComplaintLoading,
     request: storeComplaintRequest,
   } = useStoreComplaintFormRequestHandler(storeComplaintForm);
+
+  function storeComplaint() {
+    storeComplaintForm.value.address.coordinates = `${storeComplaintForm.value.lat},${storeComplaintForm.value.lng}`;
+    storeComplaintRequest();
+  }
 
   const map = ref();
   const marker = ref();
