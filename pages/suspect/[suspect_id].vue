@@ -29,10 +29,6 @@
             <span class="font-semibold text-primary-700">
               Suspeita #{{ suspect.id }}
             </span>
-
-            <span class="text-sm font-medium">
-              {{ Formatter.date(suspect.started_at) }}
-            </span>
           </div>
 
           <div class="center-flex">
@@ -52,7 +48,7 @@
         </span>
 
         <div
-          v-if="suspect.actions === 'executor' || true"
+          v-if="suspect.actions === 'executor' && suspect.status.slug === 'pending'"
           class="center-flex gap-6"
         >
           <ExpoButton
@@ -90,6 +86,7 @@
       >
         <ExpoInputSelect
           v-model="confirmSuspectForm.plague_type_id"
+          placeholder="Selecione um tipo de praga"
           :options="plagueTypes"
           :loading="plagueTypesLoading"
           option-value="id"
@@ -145,6 +142,10 @@
   import { useDiscardSuspectFormRequestHandler } from '~/app/suspect/handlers/discardSuspectFormRequestHandler';
   import { useGetPlagueTypesLoadingRequestHandler } from '~/app/plague/handlers/getPlagueTypesLoadingRequestHandler';
 
+  await definePage({
+    title: 'Suspeita',
+  });
+
   const route = useRoute();
 
   const {
@@ -179,18 +180,32 @@
   });
 
   const {
-    request: confirmSuspect,
+    request: confirmSuspectRequest,
     loading: confirmSuspectLoading
   } = useConfirmSuspectFormRequestHandler(
     () => route.params.suspect_id,
     confirmSuspectForm
   );
 
+  async function confirmSuspect() {
+    await confirmSuspectRequest().then(() => {
+      getSuspectRequest();
+      modals.value.confirm = false;
+    });
+  }
+
   const {
-    request: discardSuspect,
+    request: discardSuspectRequest,
     loading: discardSuspectLoading
   } = useDiscardSuspectFormRequestHandler(
     () => route.params.suspect_id
   );
+
+  async function discardSuspect() {
+    await discardSuspectRequest().then(() => {
+      getSuspectRequest();
+      modals.value.discard = false;
+    });
+  }
 
 </script>

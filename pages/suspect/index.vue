@@ -58,6 +58,10 @@
   import { useGetSuspectsPaginatedRequestHandler } from '~/app/suspect/handlers/getSuspectsPaginatedRequestHandler';
   import { GLOBAL_ICONS } from '~/shared/packages/constants/icons';
 
+  await definePage({
+    title: 'Suspeitas',
+  });
+
   const {
     data: suspects,
     loading: suspectsLoading,

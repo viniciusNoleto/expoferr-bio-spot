@@ -35,13 +35,15 @@
             <span class="font-semibold text-primary-700">
               Suspeita #{{ plague.id }}
             </span>
-
-            <span class="text-sm font-medium">
-              {{ Formatter.date(plague.started_at) }}
-            </span>
           </div>
 
-          <div class="center-flex">
+          <div class="center-flex gap-4">
+            <UtilsBadge
+              class="text-sm bg-primary-500/30"
+            >
+              {{ plague.name }}
+            </UtilsBadge>
+
             <UtilsBadge
               :style="{
                 backgroundColor: plague.status.color + '4d',
@@ -53,9 +55,21 @@
           </div>
         </div>
 
-        <span>
-          {{ plague.process_info.description }}
+        <span class="text-sm">
+          {{ plague.description }}
         </span>
+
+        <div
+          v-if="plague.actions === 'executor' && plague.status.slug === 'active'"
+          class="center-flex gap-6"
+        >
+          <ExpoButton
+            label="Resolver praga"
+            color="primary"
+            :loading="resolvePlagueLoading"
+            @action="resolvePlague"
+          />
+        </div>
       </template>
     </UtilsCard>
   </UtilsPageFrame>
@@ -64,6 +78,11 @@
 <script setup>
 
   import { useGetPlagueLoadingRequestHandler } from '~/app/plague/handlers/getPlagueLoadingRequestHandler';
+  import { useResolvePlagueFormRequestHandler } from '~/app/plague/handlers/resolvePlagueFormRequestHandler';
+
+  await definePage({
+    title: 'Praga',
+  });
 
   const route = useRoute();
 
@@ -82,5 +101,19 @@
     getPlagueRequest,
     () => navigateToPrevious('/plague')
   );
+
+
+  const {
+    request: resolvePlagueRequest,
+    loading: resolvePlagueLoading,
+  } = useResolvePlagueFormRequestHandler(
+    () => route.params.plague_id,
+  );
+
+  async function resolvePlague() {
+    await resolvePlagueRequest().then(() => {
+      getPlagueRequest();
+    });
+  }
 
 </script>

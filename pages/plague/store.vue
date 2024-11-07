@@ -37,7 +37,7 @@
           class="col-span-12"
         >
           <ExpoInputTextarea
-            v-model="storePlagueForm.address"
+            v-model="storePlagueForm.address.full_address"
           />
         </ExpoInputFrame>
 
@@ -56,7 +56,7 @@
           label="Confirmar"
           color="primary"
           :loading="storePlagueLoading"
-          @action="storePlagueRequest"
+          @action="storePlague"
         />
       </section>
     </UtilsCard>
@@ -67,11 +67,18 @@
 
   import L from 'leaflet';
   import { useStorePlagueFormRequestHandler } from '~/app/plague/handlers/storePlagueFormRequestHandler';
-  import { useGetPlagueTypesLoadingRequestHandler } from '~/app/plague/handlers/getPlagueTypesLoadingRequestHandler'
+  import { useGetPlagueTypesLoadingRequestHandler } from '~/app/plague/handlers/getPlagueTypesLoadingRequestHandler';
+
+  await definePage({
+    title: 'Nova praga',
+  });
 
   const storePlagueForm = ref({
     description: '',
-    address: '',
+    address: {
+      full_address: '',
+      coordinates: ''
+    },
     lat: 0,
     lng: 0,
   });
@@ -80,6 +87,14 @@
     loading: storePlagueLoading,
     request: storePlagueRequest,
   } = useStorePlagueFormRequestHandler(storePlagueForm);
+
+  async function storePlague() {
+    storePlagueForm.value.address.coordinates = `${storePlagueForm.value.lat},${storePlagueForm.value.lng}`;
+
+    await storePlagueRequest().then(() => {
+      navigateTo('/plague');
+    });
+  }
 
   const {
     data: plagueTypes,

@@ -55,6 +55,10 @@
   import L from 'leaflet';
   import { useStoreComplaintFormRequestHandler } from '~/app/complaint/handlers/storeComplaintFormRequestHandler';
 
+  await definePage({
+    title: 'Nova denúncia',
+  });
+
   const storeComplaintForm = ref({
     description: '',
     address: {
@@ -70,9 +74,12 @@
     request: storeComplaintRequest,
   } = useStoreComplaintFormRequestHandler(storeComplaintForm);
 
-  function storeComplaint() {
+  async function storeComplaint() {
     storeComplaintForm.value.address.coordinates = `${storeComplaintForm.value.lat},${storeComplaintForm.value.lng}`;
-    storeComplaintRequest();
+
+    await storeComplaintRequest().then(() => {
+      navigateTo('/complaint');
+    });
   }
 
   const map = ref();

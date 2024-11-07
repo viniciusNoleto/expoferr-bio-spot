@@ -24,7 +24,7 @@
           class="col-span-12"
         >
           <ExpoInputTextarea
-            v-model="storeSuspectForm.address"
+            v-model="storeSuspectForm.address.full_address"
           />
         </ExpoInputFrame>
 
@@ -43,7 +43,7 @@
           label="Confirmar"
           color="primary"
           :loading="storeSuspectLoading"
-          @action="storeSuspectRequest"
+          @action="storeSuspect"
         />
       </section>
     </UtilsCard>
@@ -55,9 +55,16 @@
   import L from 'leaflet';
   import { useStoreSuspectFormRequestHandler } from '~/app/suspect/handlers/storeSuspectFormRequestHandler';
 
+  await definePage({
+    title: 'Nova suspeita',
+  });
+
   const storeSuspectForm = ref({
     description: '',
-    address: '',
+    address: {
+      full_address: '',
+      coordinates: ''
+    },
     lat: 0,
     lng: 0,
   });
@@ -66,6 +73,14 @@
     loading: storeSuspectLoading,
     request: storeSuspectRequest,
   } = useStoreSuspectFormRequestHandler(storeSuspectForm);
+
+  async function storeSuspect() {
+    storeSuspectForm.value.address.coordinates = `${storeSuspectForm.value.lat},${storeSuspectForm.value.lng}`;
+
+    await storeSuspectRequest().then(() => {
+      navigateTo('/suspect');
+    });
+  }
 
   const map = ref();
   const marker = ref();

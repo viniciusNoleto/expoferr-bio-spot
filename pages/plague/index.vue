@@ -13,7 +13,8 @@
         :data="plagues"
         :columns="[
           { field: 'id', label: 'ID' },
-          { field: 'process_info.description', label: 'Descrição' },
+          { field: 'name', label: 'Praga' },
+          { field: 'description', label: 'Descrição' },
           { field: 'status', label: 'Situação' },
         ]"
         @change-page="plaguesChangePage"
@@ -58,6 +59,9 @@
   import { useGetPlaguesPaginatedRequestHandler } from '~/app/plague/handlers/getPlaguesPaginatedRequestHandler';
   import { GLOBAL_ICONS } from '~/shared/packages/constants/icons';
 
+  await definePage({
+    title: 'Pragas',
+  });
 
   const {
     data: plagues,

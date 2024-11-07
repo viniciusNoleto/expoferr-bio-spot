@@ -10,11 +10,11 @@ export const useSuspectRepository = defineRepository(useExpoferrLaravelClient, (
   };
 
   function confirmSuspect(suspect_id: string|number, body: object) {
-    return client.post<never>({ url: url + suspect_id, body });
+    return client.post<never>({ url: url + suspect_id + '/confirm', body });
   };
 
   function discardSuspect(suspect_id: string|number) {
-    return client.post<never>({ url: url + suspect_id });
+    return client.post<never>({ url: url + suspect_id + '/discard' });
   };
 
   function getSuspects(params: object) {

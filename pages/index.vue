@@ -61,6 +61,10 @@
 
   import { GLOBAL_ICONS } from '~/shared/packages/constants/icons';
 
+  await definePage({
+    title: 'Início',
+  });
+
   const img = useImage();
 
   const homeImg = computed(() => img('/home.jpg'));

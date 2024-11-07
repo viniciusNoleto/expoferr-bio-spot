@@ -53,6 +53,11 @@
     layout: 'auth',
   });
 
+  await definePage({
+    title: 'Login',
+    is_public: true,
+  });
+
   const form = ref({
     cpf: '',
     password: '',

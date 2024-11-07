@@ -15,7 +15,7 @@
 
     <div class="flex flex-col gap-2 p-2.5 grow">
       <NuxtLink
-        v-for="link in links"
+        v-for="link in filteredLinks"
         :key="link.to"
         :to="link.to"
         class="flex items-center gap-1.5 p-2 rounded-lg text-sm transition-all"
@@ -65,7 +65,7 @@
 
   const env = useEnv();
 
-  const links = [
+  const links = ref([
     {
       label: 'Início',
       to: '/',
@@ -77,19 +77,24 @@
       to: '/complaint',
       route: 'complaint',
       icon: GLOBAL_ICONS.complaint,
+      condition: () => ['citizen', 'fiscal'].includes(userStore.user?.role_slug),
     },
     {
       label: 'Suspeitas',
       to: '/suspect',
       route: 'suspect',
       icon: GLOBAL_ICONS.suspect,
+      condition: () => ['specialist', 'fiscal'].includes(userStore.user?.role_slug),
     },
     {
       label: 'Pragas',
       to: '/plague',
       route: 'plague',
       icon: GLOBAL_ICONS.plague,
+      condition: () => userStore.user?.role_slug === 'specialist',
     },
-  ];
+  ]);
+
+  const filteredLinks = computed(() => links.value.filter(link => !link.condition || link.condition()));
 
 </script>
