@@ -2,8 +2,8 @@
   <UtilsPageFrame
     :breadcrumbs="[
       { route: 'index', name: 'Início' },
-      { route: 'plague', name: 'Suspeitas' },
-      { route: 'plague-plague_id', name: 'Suspeita' },
+      { route: 'plague', name: 'Pragas' },
+      { route: 'plague-plague_id', name: 'Praga' },
     ]"
   >
     <UtilsCard class="gap-10">
@@ -33,7 +33,7 @@
         <div class="flex justify-between items-center">
           <div class="flex flex-col gap-1">
             <span class="font-semibold text-primary-700">
-              Suspeita #{{ plague.id }}
+              Praga #{{ plague.id }}
             </span>
           </div>
 
